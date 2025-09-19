@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us Form</title>
+    <title>Trip Expense Splitter - Contact Us</title>
     <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -25,8 +25,8 @@
         
         <!-- Form Container -->
         <div id="form-container" class="bg-white rounded-lg shadow-lg p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Contact Us</h1>
-            <p class="text-gray-600 mb-8 text-center">Have a question or feedback? Write to us.</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Trip Expense Splitter</h1>
+            <p class="text-gray-600 mb-8 text-center">Contact us for any questions or feedback.</p>
 
             <form id="contact-form" action="https://formsubmit.co/2023.hardeep@gmail.com" method="POST">
                 
@@ -42,13 +42,13 @@
                     <input type="email" id="email" name="email" placeholder="email@example.com" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
 
-                <!-- NEW: Mobile Number Field -->
+                <!-- Mobile Number Field -->
                 <div class="mb-5">
                     <label for="mobile" class="block mb-2 text-sm font-medium text-gray-700">Mobile Number</label>
                     <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
 
-                <!-- NEW: Related Issue Dropdown -->
+                <!-- Related Issue Dropdown -->
                 <div class="mb-5">
                     <label for="issue" class="block mb-2 text-sm font-medium text-gray-700">Related Issue</label>
                     <select id="issue" name="issue" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
@@ -76,8 +76,8 @@
                 <!-- This input tells FormSubmit to send a formatted HTML email -->
                 <input type="hidden" name="_template" value="table">
                 
-                <!-- This is removed, as JS will handle the success message -->
-                <!-- <input type="hidden" name="_next" value="..."> -->
+                <!-- NEW: Set a custom subject for the emails you receive -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission - Trip Expense Splitter">
                 
                 <!-- Optional: Disable the reCAPTCHA -->
                 <input type="hidden" name="_captcha" value="false">
