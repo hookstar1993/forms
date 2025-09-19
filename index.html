@@ -19,7 +19,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-12">
 
     <div class="w-full max-w-2xl mx-auto p-6 md:p-8">
         
@@ -40,6 +40,25 @@
                 <div class="mb-5">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Your Email</label>
                     <input type="email" id="email" name="email" placeholder="email@example.com" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+
+                <!-- NEW: Mobile Number Field -->
+                <div class="mb-5">
+                    <label for="mobile" class="block mb-2 text-sm font-medium text-gray-700">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+
+                <!-- NEW: Related Issue Dropdown -->
+                <div class="mb-5">
+                    <label for="issue" class="block mb-2 text-sm font-medium text-gray-700">Related Issue</label>
+                    <select id="issue" name="issue" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="" disabled selected>Please select an issue</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="Billing Question">Billing Question</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
 
                 <!-- Subject Field -->
