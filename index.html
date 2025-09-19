@@ -17,9 +17,13 @@
         .form-input, .submit-btn {
             transition: all 0.3s ease;
         }
+        /* Style for invalid input fields */
+        .form-input:invalid {
+            border-color: #EF4444; /* red-500 */
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-12">
 
     <div class="w-full max-w-2xl mx-auto p-6 md:p-8">
         
@@ -28,18 +32,37 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Contact Us</h1>
             <p class="text-gray-600 mb-8 text-center">Have a question or feedback? Write to us.</p>
 
-            <form id="contact-form" action="https://formsubmit.co/2023.hardeep@gmail.com" method="POST">
+            <form id="contact-form" action="https://formsubmit.co/2023.hardeep@gmail.com" method="POST" novalidate>
                 
-                <!-- Name Field -->
+                <!-- Name Field with validation -->
                 <div class="mb-5">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Your Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" pattern="[A-Za-z\s]+" title="Please enter only letters and spaces." class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
 
-                <!-- Email Field -->
+                <!-- Email Field with validation -->
                 <div class="mb-5">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Your Email</label>
-                    <input type="email" id="email" name="email" placeholder="email@example.com" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    <input type="email" id="email" name="email" placeholder="email@example.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Please enter a valid email address." class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+
+                <!-- Mobile Number Field -->
+                <div class="mb-5">
+                    <label for="mobile" class="block mb-2 text-sm font-medium text-gray-700">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" placeholder="Enter 10-digit mobile number" pattern="\d{10}" title="Please enter a valid 10-digit mobile number." class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+
+                <!-- Related Issue Dropdown -->
+                <div class="mb-5">
+                    <label for="issue" class="block mb-2 text-sm font-medium text-gray-700">Related Issue</label>
+                    <select id="issue" name="issue" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="" disabled selected>Please select an issue</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="Billing Question">Billing Question</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
 
                 <!-- Subject Field -->
@@ -48,17 +71,14 @@
                     <input type="text" id="subject" name="subject" placeholder="What are you writing about?" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
                 </div>
 
-                <!-- Message Field -->
+                <!-- Message Field with validation -->
                 <div class="mb-6">
                     <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Your Message</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." minlength="10" class="form-input block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></textarea>
                 </div>
 
                 <!-- This input tells FormSubmit to send a formatted HTML email -->
                 <input type="hidden" name="_template" value="table">
-                
-                <!-- This is removed, as JS will handle the success message -->
-                <!-- <input type="hidden" name="_next" value="..."> -->
                 
                 <!-- Optional: Disable the reCAPTCHA -->
                 <input type="hidden" name="_captcha" value="false">
@@ -70,7 +90,7 @@
                     </button>
                 </div>
                  <!-- Status message for JavaScript feedback -->
-                <p id="form-status" class="text-center mt-4"></p>
+                <p id="form-status" class="text-center mt-4 font-medium"></p>
             </form>
         </div>
 
@@ -84,43 +104,76 @@
     </div>
 
     <script>
-        // JavaScript to handle form submission with AJAX
         const form = document.getElementById('contact-form');
         const formContainer = document.getElementById('form-container');
         const successMessage = document.getElementById('success-message');
         const formStatus = document.getElementById('form-status');
 
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const mobile = document.getElementById('mobile').value;
+            const message = document.getElementById('message').value;
+
+            // Name validation: only letters and spaces
+            const namePattern = /^[A-Za-z\s]+$/;
+            if (!namePattern.test(name)) {
+                formStatus.innerText = 'Please enter a valid name (letters and spaces only).';
+                formStatus.className = 'text-center mt-4 font-medium text-red-500';
+                return false;
+            }
+
+            // Mobile validation: exactly 10 digits
+            const mobilePattern = /^\d{10}$/;
+            if (!mobilePattern.test(mobile)) {
+                formStatus.innerText = 'Please enter a valid 10-digit mobile number.';
+                formStatus.className = 'text-center mt-4 font-medium text-red-500';
+                return false;
+            }
+
+            // Message validation: at least 3 words
+            const wordCount = message.trim().split(/\s+/).length;
+            if (wordCount < 3) {
+                formStatus.innerText = 'Your message must contain at least 3 words.';
+                formStatus.className = 'text-center mt-4 font-medium text-red-500';
+                return false;
+            }
+
+            // If all checks pass
+            return true;
+        }
+
         async function handleSubmit(event) {
             event.preventDefault();
-            const data = new FormData(event.target);
             
-            // Show a "sending" message to the user
+            // Run all custom validations first
+            if (!validateForm()) {
+                return; // Stop if validation fails
+            }
+
+            const data = new FormData(event.target);
             formStatus.innerText = 'Sending...';
-            formStatus.className = 'text-center mt-4 text-gray-600';
+            formStatus.className = 'text-center mt-4 font-medium text-gray-600';
 
             try {
                 const response = await fetch(event.target.action, {
                     method: form.method,
                     body: data,
                     headers: {
-                        'Accept': 'application/json' // This is important for FormSubmit's AJAX feature
+                        'Accept': 'application/json'
                     }
                 });
 
                 if (response.ok) {
-                    // On success, hide the form and show the thank you message
                     formContainer.classList.add('hidden');
                     successMessage.classList.remove('hidden');
-                    form.reset(); // Clear the form fields
+                    form.reset();
                 } else {
-                    // If the server returns an error
                     formStatus.innerText = 'Oops! There was a problem submitting your form.';
-                    formStatus.className = 'text-center mt-4 text-red-500';
+                    formStatus.className = 'text-center mt-4 font-medium text-red-500';
                 }
             } catch (error) {
-                // If there's a network error
                 formStatus.innerText = 'A network error occurred. Please try again later.';
-                formStatus.className = 'text-center mt-4 text-red-500';
+                formStatus.className = 'text-center mt-4 font-medium text-red-500';
             }
         }
 
